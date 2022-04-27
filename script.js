@@ -21,7 +21,7 @@ window.onload = init = async () => {
 
 const onClickButton = async () => {
   if (!inputTask.value.trim() || !inputSum.value.trim() || inputSum.value < 0)
-    alert("пожалуйста введите данные");
+    alert("пожалуйста корректные введите данные");
   else {
     const resp = await fetch("http://localhost:7070/createTask", {
       method: "POST",
@@ -72,6 +72,7 @@ const render = () => {
       container.appendChild(editInput);
       container.appendChild(date);
       container.appendChild(sum);
+      container.appendChild(imageDone);
       container.appendChild(imageClose);
       content.appendChild(container);
     } else {
@@ -94,9 +95,13 @@ const render = () => {
       const imageDelete = document.createElement("img");
       imageDelete.src = "images/close.svg";
       imageDelete.onclick = () => removeTask(index);
+      imageEdit.src = "images/edit.svg";
+      imageEdit.className = "editSvg";
+      imageEdit.onclick = () => editTask(index);
       container.appendChild(text);
       container.appendChild(date);
       container.appendChild(sum);
+      container.appendChild(imageEdit);
       container.appendChild(imageDelete);
       content.appendChild(container);
     }
