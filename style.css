@@ -1,0 +1,62 @@
+body {
+    background-color: #657580;
+}
+
+.mainContainer {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.container {
+    display: flex;
+    justify-content: baseline;
+}
+
+#contentPage {
+    width: 30%;
+}
+
+.taskContainer {
+    display: flex;
+    justify-content: space-between;
+}
+
+.input {
+    height: 60%;
+    border-radius: 3%;
+    border: 0;
+}
+
+.block {
+    margin: 4%;
+}
+
+.sum {
+    margin-left: 42%;
+    margin-top: 2%;
+}
+
+.button {
+    margin-top: 12%;
+    background-color: hsl(151deg 28% 41%);
+    border: 0;
+    border-radius: 5%;
+    font-size: 15px;
+    padding: 3%;
+    cursor: pointer;
+}
+
+.button:active {
+    background-color: rgb(22, 219, 127);
+}
+
+.mainTitle {
+    margin-bottom: 0;
+}
+
+.title {
+    margin-top: 5%;
+    margin-bottom: 5%;
+}
