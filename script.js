@@ -63,12 +63,12 @@ const render = () => {
       editInput.onchange = (e) => (timeText = e.target.value);
       const sum = document.createElement("img");
       sum.className = "allSum";
-      sum.value = item.sum;
+      sum.innerText = item.sum + "р";
       const imageClose = document.createElement("img");
       imageClose.src = "images/close.svg";
       imageClose.onclick = () => closeTask(item, index);
       const date = document.createElement("p");
-      date.innerText = item.date;
+      date.innerText = item.date.slice(0, 10);
       container.appendChild(editInput);
       container.appendChild(date);
       container.appendChild(sum);
@@ -82,11 +82,10 @@ const render = () => {
       text.innerText = item.text;
       text.className = item.isCheck ? "textTask doneText" : "textTask";
       const date = document.createElement("p");
-      console.log(item.date);
-      date.innerText = item.date;
+      date.innerText = item.date.slice(0, 10);
       const sum = document.createElement("p");
       sum.className = "allSum";
-      sum.innerText = item.sum;
+      sum.innerText = item.sum + "р";
       const imageEdit = document.createElement("img");
       imageEdit.src = "images/edit.svg";
       imageEdit.className = "editSvg";
@@ -102,4 +101,16 @@ const render = () => {
       content.appendChild(container);
     }
   });
+};
+
+const removeTask = async (index) => {
+  const resp = await fetch(
+    `http://localhost:7070/deleteTasks?_id=${allTasks[index]._id}`,
+    {
+      method: "DELETE",
+    }
+  );
+  const result = await resp.json();
+  allTasks = result.data;
+  render();
 };
