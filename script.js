@@ -69,9 +69,14 @@ const render = () => {
       imageClose.onclick = () => closeTask(item, index);
       const date = document.createElement("p");
       date.innerText = item.date;
+      const imageDone = document.createElement("img");
+      imageDone.src = "images/done.svg";
+      imageDone.className = "doneSvg";
+      imageDone.onclick = () => saveTask(index, timeText);
       container.appendChild(editInput);
       container.appendChild(date);
       container.appendChild(sum);
+      container.appendChild(imageDone);
       container.appendChild(imageClose);
       content.appendChild(container);
     } else {
@@ -82,8 +87,7 @@ const render = () => {
       text.innerText = item.text;
       text.className = item.isCheck ? "textTask doneText" : "textTask";
       const date = document.createElement("p");
-      console.log(item.date);
-      date.innerText = item.date;
+      date.innerText = item.date.slice(0, 10);
       const sum = document.createElement("p");
       sum.className = "allSum";
       sum.innerText = item.sum;
@@ -95,9 +99,13 @@ const render = () => {
       const imageDelete = document.createElement("img");
       imageDelete.src = "images/close.svg";
       imageDelete.onclick = () => removeTask(index);
+      imageEdit.src = "images/edit.svg";
+      imageEdit.className = "editSvg";
+      imageEdit.onclick = () => editTask(index);
       container.appendChild(text);
       container.appendChild(date);
       container.appendChild(sum);
+      container.appendChild(imageEdit);
       container.appendChild(imageDelete);
       content.appendChild(container);
     }
