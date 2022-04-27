@@ -20,8 +20,8 @@ window.onload = init = async () => {
 };
 
 const onClickButton = async () => {
-  if (!inputTask.value.trim() || !inputSum.value.trim())
-    alert("пожалуйста введите данные");
+  if (!inputTask.value.trim() || !inputSum.value.trim() || inputSum.value < 0)
+    alert("пожалуйста корректные введите данные");
   else {
     const resp = await fetch("http://localhost:7070/createTask", {
       method: "POST",
