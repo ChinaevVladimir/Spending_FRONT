@@ -5,6 +5,7 @@ let valueInputSum = "";
 let inputSum = null;
 let flagForEditing = -1;
 let timeText = "";
+let timeSum = "";
 let timeDate = "";
 
 window.onload = init = async () => {
@@ -59,11 +60,15 @@ const render = () => {
       container.className = "taskContainerForEdit";
       const editInput = document.createElement("input");
       const editSum = document.createElement("input");
+      editSum.type = "number";
       const editDate = document.createElement("input");
       editDate.type = "date";
       const imageDone = document.createElement("img");
       imageDone.src = "images/done.svg";
       imageDone.className = "doneSvg";
+      editInput.onchange = (e) => (timeText = e.target.value);
+      editSum.onchange = (e) => (timeSum = e.target.value);
+      editDate.onchange = (e) => (timeDate = e.target.value);
       imageDone.onclick = () => saveTask(index, timeText, timeSum, timeDate);
       editInput.className = "textTask";
       editInput.value = item.text;
@@ -71,12 +76,6 @@ const render = () => {
       editSum.value = item.sum;
       editDate.className = "dateTask";
       editDate.value = item.date.slice(0, 10).split("-").reverse().join(".");
-      timeText = "";
-      timeSum = "";
-      timeDate = "";
-      editInput.onchange = (e) => (timeText = e.target.value);
-      editSum.onchange = (e) => (timeSum = e.target.value);
-      editDate.onchange = (e) => (timeDate = e.target.value);
       const sum = document.createElement("img");
       sum.className = "allSum";
       sum.innerText = item.sum + "р";
@@ -138,12 +137,7 @@ const editTask = (index) => {
 
 const saveTask = async (index, timeText, timeSum, timeDate) => {
   flagForEditing = -1;
-  text = timeText;
-  sum = timeSum;
-  date = timeDate;
-  if (!timeText.trim() || timeSum < 0 || !timeDate)
-    alert("пожалуйста, корректное значение");
-  else {
+  if (timeText.trim() || timeSum > 0 || timeDate) {
     const resp = await fetch(`http://localhost:7070/updateTasks`, {
       method: "PATCH",
       headers: {
@@ -151,14 +145,16 @@ const saveTask = async (index, timeText, timeSum, timeDate) => {
         "Access-Control-Allow-Origin": "*",
       },
       body: JSON.stringify({
-        _id: allTasks[index],
-        text,
-        sum,
-        date,
+        _id: allTasks[index]._id,
+        text: timeText ? timeText : allTasks[index].text,
+        sum: timeSum ? timeSum : allTasks[index].sum,
+        date: timeDate ? timeDate : allTasks[index].date,
       }),
     });
     const result = await resp.json();
     allTasks = result.data;
+  } else {
+    alert("пожалуйста введите корректные данные");
   }
   render();
 };
