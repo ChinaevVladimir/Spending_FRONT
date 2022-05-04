@@ -137,10 +137,10 @@ const editTask = (index) => {
 
 const saveTask = async (index, timeText, timeSum, timeDate) => {
   flagForEditing = -1;
-  let { text, sum, date } = allTasks[index];
-  text = timeText ? timeText : allTasks[index].text;
-  sum = timeSum ? timeSum : allTasks[index].sum;
-  date = timeDate ? timeDate : allTasks[index].date;
+  let { _id, text, sum, date } = allTasks[index];
+  text = timeText ? timeText : text;
+  sum = timeSum ? timeSum : sum;
+  date = timeDate ? timeDate : date;
   if (timeText.trim() || timeSum > 0 || timeDate) {
     const resp = await fetch(`http://localhost:7070/updateTasks`, {
       method: "PATCH",
@@ -149,7 +149,7 @@ const saveTask = async (index, timeText, timeSum, timeDate) => {
         "Access-Control-Allow-Origin": "*",
       },
       body: JSON.stringify({
-        _id: allTasks[index]._id,
+        _id,
         text,
         sum,
         date,
