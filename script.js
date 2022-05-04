@@ -141,7 +141,6 @@ const saveTask = async (index, timeText, timeSum, timeDate) => {
   text = timeText;
   sum = timeSum;
   date = timeDate;
-  const id = allTasks[index];
   if (!timeText.trim() || timeSum < 0 || !timeDate)
     alert("пожалуйста, корректное значение");
   else {
@@ -152,7 +151,7 @@ const saveTask = async (index, timeText, timeSum, timeDate) => {
         "Access-Control-Allow-Origin": "*",
       },
       body: JSON.stringify({
-        _id: id._id,
+        _id: allTasks[index],
         text,
         sum,
         date,
