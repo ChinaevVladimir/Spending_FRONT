@@ -53,7 +53,6 @@ const render = () => {
   const content = document.getElementById("contentPage");
   const allSum = document.getElementById("allSum");
   while (content.firstChild) content.removeChild(content.firstChild);
-  while (allSum.firstChild) allSum.removeChild(allSum.firstChild);
   allTasks.map((item, index) => {
     if (flagForEditing === index) {
       const container = document.createElement("div");
@@ -97,6 +96,7 @@ const render = () => {
       text.innerText = item.text;
       text.className = item.isCheck ? "textTask doneText" : "textTask";
       const date = document.createElement("p");
+      date.className = "date";
       date.innerText = item.date.slice(0, 10).split("-").reverse().join(".");
       const sum = document.createElement("p");
       sum.className = "allSum";
