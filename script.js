@@ -51,17 +51,18 @@ const updateValue2 = (event) => (valueInputSum = event.target.value);
 
 const render = () => {
   const content = document.getElementById("contentPage");
-  const allSum = document.getElementById("allSum");
   while (content.firstChild) content.removeChild(content.firstChild);
   allTasks.map((item, index) => {
     if (flagForEditing === index) {
       const container = document.createElement("div");
-      container.className = "taskContainerForEdit";
+      container.className = "taskContainer";
       const editInput = document.createElement("input");
       const editSum = document.createElement("input");
       editSum.type = "number";
       const editDate = document.createElement("input");
       editDate.type = "date";
+      editDate.min = "2022-01-01";
+      editDate.max = "2022-12-31";
       const imageDone = document.createElement("img");
       imageDone.src = "images/done.svg";
       imageDone.className = "doneSvg";
@@ -71,20 +72,16 @@ const render = () => {
       imageDone.onclick = () => saveTask(index, timeText, timeSum, timeDate);
       editInput.className = "textTask";
       editInput.value = item.text;
-      editSum.className = "sumTask";
+      editSum.className = "allSum";
       editSum.value = item.sum;
-      editDate.className = "dateTask";
+      editDate.className = "date";
       editDate.value = item.date.slice(0, 10).split("-").reverse().join(".");
-      const sum = document.createElement("img");
-      sum.className = "allSum";
-      sum.innerText = item.sum + "р";
       const imageClose = document.createElement("img");
       imageClose.src = "images/close.svg";
       imageClose.onclick = () => closeTask(item, index);
       container.appendChild(editInput);
       container.appendChild(editSum);
       container.appendChild(editDate);
-      container.appendChild(sum);
       container.appendChild(imageDone);
       container.appendChild(imageClose);
       content.appendChild(container);

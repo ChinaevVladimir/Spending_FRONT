@@ -19,9 +19,16 @@ body {
   margin-left: 6%;
   overflow-y: auto;
   height: 400px;
+  margin-top: 1%;
 }
 
 .taskContainer {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+}
+
+.taskContainerForEdit {
   display: flex;
   justify-content: space-between;
   align-items: baseline;
@@ -44,7 +51,7 @@ body {
 
 .textTask {
   word-break: break-word;
-  width: 35%;
+  width: 20%;
 }
 
 .allSum {
@@ -88,12 +95,15 @@ body {
     width: 56%;
     height: 800px;
   }
+
   .textTask {
     font-size: 23px;
   }
+
   .allSum {
     font-size: 23px;
   }
+
   .date {
     font-size: 23px;
   }
@@ -110,15 +120,22 @@ body {
     flex-direction: column;
     width: 80%;
   }
+
+  .taskContainer {
+    margin-top: 1%;
+  }
+
   .block {
     font-size: 20px;
     margin: 0;
   }
+
   .input {
     width: 90%;
     padding: 2%;
     border-radius: 0;
   }
+
   #contentPage {
     width: 95%;
     margin: 0;
@@ -131,22 +148,27 @@ body {
     width: 100%;
     font-size: 29px;
   }
+
   #contentPage {
     height: 350px;
   }
+
   .textTask {
     font-size: 18px;
   }
+
   .allSum {
     font-size: 18px;
     display: flex;
     justify-content: center;
     margin: 2%;
   }
+
   .date {
     font-size: 18px;
     margin: 2%;
   }
+
   .editSvg {
     margin: 2%;
   }
