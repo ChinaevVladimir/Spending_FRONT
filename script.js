@@ -5,6 +5,8 @@ let valueInputSum = "";
 let inputSum = null;
 let flagForEditing = -1;
 let timeText = "";
+let timeSum = "";
+let timeDate = "";
 
 window.onload = init = async () => {
   inputTask = document.getElementById("addTask");
@@ -57,20 +59,32 @@ const render = () => {
       const container = document.createElement("div");
       container.className = "taskContainerForEdit";
       const editInput = document.createElement("input");
+      const editSum = document.createElement("input");
+      editSum.type = "number";
+      const editDate = document.createElement("input");
+      editDate.type = "date";
+      const imageDone = document.createElement("img");
+      imageDone.src = "images/done.svg";
+      imageDone.className = "doneSvg";
+      editInput.onchange = (e) => (timeText = e.target.value);
+      editSum.onchange = (e) => (timeSum = e.target.value);
+      editDate.onchange = (e) => (timeDate = e.target.value);
+      imageDone.onclick = () => saveTask(index, timeText, timeSum, timeDate);
       editInput.className = "textTask";
       editInput.value = item.text;
-      timeText = "";
-      editInput.onchange = (e) => (timeText = e.target.value);
+      editSum.className = "sumTask";
+      editSum.value = item.sum;
+      editDate.className = "dateTask";
+      editDate.value = item.date.slice(0, 10).split("-").reverse().join(".");
       const sum = document.createElement("img");
       sum.className = "allSum";
       sum.innerText = item.sum + "р";
       const imageClose = document.createElement("img");
       imageClose.src = "images/close.svg";
       imageClose.onclick = () => closeTask(item, index);
-      const date = document.createElement("p");
-      date.innerText = item.date.slice(0, 10);
       container.appendChild(editInput);
-      container.appendChild(date);
+      container.appendChild(editSum);
+      container.appendChild(editDate);
       container.appendChild(sum);
       container.appendChild(imageDone);
       container.appendChild(imageClose);
@@ -83,7 +97,7 @@ const render = () => {
       text.innerText = item.text;
       text.className = item.isCheck ? "textTask doneText" : "textTask";
       const date = document.createElement("p");
-      date.innerText = item.date.slice(0, 10);
+      date.innerText = item.date.slice(0, 10).split("-").reverse().join(".");
       const sum = document.createElement("p");
       sum.className = "allSum";
       sum.innerText = item.sum + "р";
@@ -91,7 +105,6 @@ const render = () => {
       imageEdit.src = "images/edit.svg";
       imageEdit.className = "editSvg";
       imageEdit.onclick = () => editTask(index);
-      if (allTasks[index].isCheck === false) container.appendChild(imageEdit);
       const imageDelete = document.createElement("img");
       imageDelete.src = "images/close.svg";
       imageDelete.onclick = () => removeTask(index);
@@ -117,5 +130,44 @@ const removeTask = async (index) => {
   );
   const result = await resp.json();
   allTasks = result.data;
+  render();
+};
+
+const editTask = (index) => {
+  flagForEditing = index;
+  render();
+};
+
+const saveTask = async (index, timeText, timeSum, timeDate) => {
+  flagForEditing = -1;
+  let { _id, text, sum, date } = allTasks[index];
+  text = timeText ? timeText : text;
+  sum = timeSum ? timeSum : sum;
+  date = timeDate ? timeDate : date;
+  if (timeText.trim() || timeSum > 0 || timeDate) {
+    const resp = await fetch(`http://localhost:7070/updateTasks`, {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json;charset=utf-8",
+        "Access-Control-Allow-Origin": "*",
+      },
+      body: JSON.stringify({
+        _id,
+        text,
+        sum,
+        date,
+      }),
+    });
+    const result = await resp.json();
+    allTasks = result.data;
+  } else {
+    alert("пожалуйста введите корректные данные");
+  }
+  render();
+};
+
+const closeTask = (item, index) => {
+  flagForEditing = -1;
+  allTasks[index].text = item.text;
   render();
 };
