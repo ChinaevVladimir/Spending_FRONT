@@ -22,8 +22,8 @@ window.onload = init = async () => {
 };
 
 const onClickButton = async () => {
-  if (!inputTask.value.trim() || !inputSum.value.trim() || inputSum.value < 0)
-    alert("пожалуйста корректные введите данные");
+  if (!inputTask.value.trim() || !inputSum.value || inputSum.value < 1)
+    alert("Пожалуйста, введите данные");
   else {
     const resp = await fetch("http://localhost:7070/createTask", {
       method: "POST",
@@ -53,9 +53,10 @@ const render = () => {
   const content = document.getElementById("contentPage");
   while (content.firstChild) content.removeChild(content.firstChild);
   allTasks.map((item, index) => {
+    const { text: textVal, sum: sumVal, date: dateVal } = item;
     if (flagForEditing === index) {
       const container = document.createElement("div");
-      container.className = "taskContainer";
+      container.className = "taskContainerForEdit";
       const editInput = document.createElement("input");
       const editSum = document.createElement("input");
       editSum.type = "number";
@@ -80,8 +81,8 @@ const render = () => {
       imageClose.src = "images/close.svg";
       imageClose.onclick = () => closeTask(item, index);
       container.appendChild(editInput);
-      container.appendChild(editSum);
       container.appendChild(editDate);
+      container.appendChild(editSum);
       container.appendChild(imageDone);
       container.appendChild(imageClose);
       content.appendChild(container);
@@ -104,15 +105,68 @@ const render = () => {
       imageEdit.onclick = () => editTask(index);
       const imageDelete = document.createElement("img");
       imageDelete.src = "images/close.svg";
+      imageDelete.className = "deleteSvg";
       imageDelete.onclick = () => removeTask(index);
-      imageEdit.src = "images/edit.svg";
-      imageEdit.className = "editSvg";
-      imageEdit.onclick = () => editTask(index);
+      const sideContainer = document.createElement("div");
+      const containerForNumb = document.createElement("div");
+      const containerForButton = document.createElement("div");
+      sideContainer.className = "sideTask";
+      containerForNumb.className = "numbTask";
+      containerForButton.className = "buttonTask";
+      text.addEventListener("dblclick", () => {
+        const sideInput = document.createElement("input");
+        sideInput.type = "text";
+        sideInput.value = textVal;
+        container.replaceChild(sideInput, text);
+        sideInput.focus();
+        sideInput.onblur = () => {
+          if (sideInput.value.trim()) {
+            timeText = sideInput.value;
+            container.replaceChild(text, sideInput);
+            saveTask(index, timeText, timeSum, timeDate);
+          } else alert("Пожалуйста, введите  данные");
+        };
+      });
+      sum.addEventListener("dblclick", () => {
+        const sideInput = document.createElement("input");
+        sideInput.type = "number";
+        sideInput.className = "allSum";
+        sideInput.value = sumVal;
+        containerForNumb.replaceChild(sideInput, sum);
+        sideInput.focus();
+        sideInput.onblur = () => {
+          if (sideInput.value || sideInput.value > 1) {
+            timeSum = sideInput.value;
+            containerForNumb.replaceChild(sum, sideInput);
+            saveTask(index, timeText, timeSum, timeDate);
+          } else alert("Пожалуйста, введите корректные данные");
+        };
+      });
+      date.addEventListener("dblclick", () => {
+        const sideInput = document.createElement("input");
+        sideInput.type = "date";
+        sideInput.className = "date";
+        sideInput.min = "2022-01-01";
+        sideInput.max = "2022-12-31";
+        sideInput.value = dateVal;
+        containerForNumb.replaceChild(sideInput, date);
+        sideInput.focus();
+        sideInput.onblur = () => {
+          if (sideInput.value) {
+            timeDate = sideInput.value;
+            containerForNumb.replaceChild(date, sideInput);
+            saveTask(index, timeText, timeSum, timeDate);
+          } else alert("Пожалуйста, введите корректные данные");
+        };
+      });
       container.appendChild(text);
-      container.appendChild(date);
-      container.appendChild(sum);
-      container.appendChild(imageEdit);
-      container.appendChild(imageDelete);
+      containerForNumb.appendChild(date);
+      containerForNumb.appendChild(sum);
+      containerForButton.appendChild(imageEdit);
+      containerForButton.appendChild(imageDelete);
+      sideContainer.appendChild(containerForNumb);
+      sideContainer.appendChild(containerForButton);
+      container.appendChild(sideContainer);
       content.appendChild(container);
     }
   });
@@ -157,9 +211,7 @@ const saveTask = async (index, timeText, timeSum, timeDate) => {
     });
     const result = await resp.json();
     allTasks = result.data;
-  } else {
-    alert("пожалуйста введите корректные данные");
-  }
+  } else alert("Пожалуйста, введите корректные данные");
   render();
 };
 
