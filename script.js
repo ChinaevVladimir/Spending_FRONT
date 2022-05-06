@@ -23,7 +23,7 @@ window.onload = init = async () => {
 
 const onClickButton = async () => {
   if (!inputTask.value.trim() || !inputSum.value || inputSum.value < 1)
-    alert("пожалуйста введите данные");
+    alert("Пожалуйста, введите данные");
   else {
     const resp = await fetch("http://localhost:7070/createTask", {
       method: "POST",
@@ -124,7 +124,7 @@ const render = () => {
             timeText = sideInput.value;
             container.replaceChild(text, sideInput);
             saveTask(index, timeText, timeSum, timeDate);
-          } else alert("пожалуйста введите  данные");
+          } else alert("Пожалуйста, введите  данные");
         };
       });
       sum.addEventListener("dblclick", () => {
@@ -139,7 +139,7 @@ const render = () => {
             timeSum = sideInput.value;
             containerForNumb.replaceChild(sum, sideInput);
             saveTask(index, timeText, timeSum, timeDate);
-          } else alert("пожалуйста введите корректные данные");
+          } else alert("Пожалуйста, введите корректные данные");
         };
       });
       date.addEventListener("dblclick", () => {
@@ -156,7 +156,7 @@ const render = () => {
             timeDate = sideInput.value;
             containerForNumb.replaceChild(date, sideInput);
             saveTask(index, timeText, timeSum, timeDate);
-          } else alert("пожалуйста введите корректные данные");
+          } else alert("Пожалуйста, введите корректные данные");
         };
       });
       container.appendChild(text);
@@ -211,9 +211,7 @@ const saveTask = async (index, timeText, timeSum, timeDate) => {
     });
     const result = await resp.json();
     allTasks = result.data;
-  } else {
-    alert("пожалуйста введите корректные данные");
-  }
+  } else alert("Пожалуйста, введите корректные данные");
   render();
 };
 
