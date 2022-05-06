@@ -15,13 +15,12 @@ body {
 }
 
 #contentPage {
-  width: 28%;
-  margin-left: 6%;
+  width: 35%;
   overflow-y: auto;
   height: 400px;
+  margin-left: 6%;
   margin-top: 1%;
 }
-
 .taskContainer {
   display: flex;
   justify-content: space-between;
@@ -32,6 +31,23 @@ body {
   display: flex;
   justify-content: space-between;
   align-items: baseline;
+}
+
+.sideTask {
+  display: flex;
+  justify-content: space-around;
+  align-items: baseline;
+  width: 75%;
+}
+
+.numbTask {
+  display: flex;
+  width: 75%;
+  justify-content: space-around;
+}
+
+.buttonTask {
+  display: flex;
 }
 
 .input {
@@ -115,19 +131,10 @@ body {
   }
 }
 
-@media (max-width: 414px) {
+@media (max-width: 540px) {
   .container {
     flex-direction: column;
     width: 80%;
-  }
-
-  .taskContainer {
-    margin-top: 1%;
-  }
-
-  .block {
-    font-size: 20px;
-    margin: 0;
   }
 
   .input {
@@ -136,9 +143,104 @@ body {
     border-radius: 0;
   }
 
-  #contentPage {
-    width: 95%;
+  .block {
+    font-size: 20px;
     margin: 0;
+  }
+
+  .allSum {
+    font-size: 23px;
+    margin: 0;
+    width: 60%;
+    margin-left: 27%;
+  }
+
+  .sideTask {
+    display: flex;
+    justify-content: space-around;
+    align-items: baseline;
+    width: 65%;
+    flex-direction: column;
+  }
+
+  .editSvg {
+    height: 25px;
+    width: 25px;
+  }
+
+  .deleteSvg {
+    height: 25px;
+    width: 25px;
+  }
+
+  .taskContainer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .numbTask {
+    display: flex;
+    width: 75%;
+    justify-content: space-around;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .buttonTask {
+    display: flex;
+    margin-top: 4%;
+    margin-left: 27%;
+  }
+
+  .container {
+    display: flex;
+    justify-content: baseline;
+    width: 100%;
+  }
+
+  .date {
+    font-size: 23px;
+    margin-bottom: 4%;
+  }
+
+  #contentPage {
+    width: 100%;
+    margin: 0;
+  }
+
+  .textTask {
+    font-size: 23px;
+    width: 35%;
+  }
+}
+
+@media (max-width: 414px) {
+  .container {
+    flex-direction: column;
+    width: 80%;
+  }
+
+  .sideTask {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .taskContainer {
+    margin-top: 1%;
+  }
+
+  .buttonTask {
+    display: flex;
+    margin-top: 4%;
+    margin-left: 0%;
+  }
+
+  .input {
+    width: 90%;
+    padding: 2%;
+    border-radius: 0;
   }
 }
 
@@ -167,9 +269,20 @@ body {
   .date {
     font-size: 18px;
     margin: 2%;
+    margin-top: 10%;
   }
 
   .editSvg {
     margin: 2%;
+  }
+
+  .editSvg {
+    height: 20px;
+    width: 20px;
+  }
+
+  .deleteSvg {
+    height: 20px;
+    width: 20px;
   }
 }
