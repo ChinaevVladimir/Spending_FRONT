@@ -53,6 +53,7 @@ const render = () => {
   const content = document.getElementById("contentPage");
   while (content.firstChild) content.removeChild(content.firstChild);
   allTasks.map((item, index) => {
+    const { text: textVal, sum: sumVal, date: dateVal } = item;
     if (flagForEditing === index) {
       const container = document.createElement("div");
       container.className = "taskContainerForEdit";
@@ -115,7 +116,7 @@ const render = () => {
       text.addEventListener("dblclick", () => {
         const sideInput = document.createElement("input");
         sideInput.type = "text";
-        sideInput.value = allTasks[index].text;
+        sideInput.value = textVal;
         container.replaceChild(sideInput, text);
         sideInput.focus();
         sideInput.onblur = () => {
@@ -123,16 +124,14 @@ const render = () => {
             timeText = sideInput.value;
             container.replaceChild(text, sideInput);
             saveTask(index, timeText, timeSum, timeDate);
-          } else {
-            alert("пожалуйста введите  данные");
-          }
+          } else alert("пожалуйста введите  данные");
         };
       });
       sum.addEventListener("dblclick", () => {
         const sideInput = document.createElement("input");
         sideInput.type = "number";
         sideInput.className = "allSum";
-        sideInput.value = allTasks[index].sum;
+        sideInput.value = sumVal;
         containerForNumb.replaceChild(sideInput, sum);
         sideInput.focus();
         sideInput.onblur = () => {
@@ -140,9 +139,7 @@ const render = () => {
             timeSum = sideInput.value;
             containerForNumb.replaceChild(sum, sideInput);
             saveTask(index, timeText, timeSum, timeDate);
-          } else {
-            alert("пожалуйста введите корректные данные");
-          }
+          } else alert("пожалуйста введите корректные данные");
         };
       });
       date.addEventListener("dblclick", () => {
@@ -151,17 +148,15 @@ const render = () => {
         sideInput.className = "date";
         sideInput.min = "2022-01-01";
         sideInput.max = "2022-12-31";
-        sideInput.value = allTasks[index].date;
+        sideInput.value = dateVal;
         containerForNumb.replaceChild(sideInput, date);
         sideInput.focus();
         sideInput.onblur = () => {
-          if (!sideInput.value) {
+          if (sideInput.value) {
             timeDate = sideInput.value;
             containerForNumb.replaceChild(date, sideInput);
             saveTask(index, timeText, timeSum, timeDate);
-          } else {
-            alert("пожалуйста введите корректные данные");
-          }
+          } else alert("пожалуйста введите корректные данные");
         };
       });
       container.appendChild(text);
