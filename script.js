@@ -51,7 +51,6 @@ const updateValue2 = (event) => (valueInputSum = event.target.value);
 
 const render = () => {
   const content = document.getElementById("contentPage");
-  const contentSum = document.getElementById("inSum");
   const allSum = document.getElementById("inSum");
   allSum.innerText = `Итого: ${sumFunc()} р.`;
   while (content.firstChild) content.removeChild(content.firstChild);
@@ -148,7 +147,6 @@ const render = () => {
           } else alert("Пожалуйста, введите корректные данные");
         };
       });
-      sum.onchange = () => count(allTasks);
       date.addEventListener("dblclick", () => {
         const sideInput = document.createElement("input");
         sideInput.type = "date";
