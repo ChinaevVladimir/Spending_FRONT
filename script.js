@@ -22,28 +22,32 @@ window.onload = init = async () => {
 };
 
 const onClickButton = async () => {
-  if (!inputTask.value.trim() || !inputSum.value || inputSum.value < 1)
-    alert("Пожалуйста, введите данные");
-  else {
-    const resp = await fetch("http://localhost:7070/createTask", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json;charset=utf-8",
-        "Access-Control-Allow-Origin": "*",
-      },
-      body: JSON.stringify({
-        text: valueInputTask,
-        sum: valueInputSum,
-      }),
-    });
-    const result = await resp.json();
-    allTasks = result.data;
-    valueInputTask = "";
-    inputTask.value = "";
-    valueInputSum = "";
-    inputSum.value = "";
+  if (flagForEditing === -1) {
+    if (!inputTask.value.trim() || !inputSum.value || inputSum.value < 1)
+      alert("Пожалуйста, введите данные");
+    else {
+      const resp = await fetch("http://localhost:7070/createTask", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json;charset=utf-8",
+          "Access-Control-Allow-Origin": "*",
+        },
+        body: JSON.stringify({
+          text: valueInputTask,
+          sum: valueInputSum,
+        }),
+      });
+      const result = await resp.json();
+      allTasks = result.data;
+      valueInputTask = "";
+      inputTask.value = "";
+      valueInputSum = "";
+      inputSum.value = "";
+    }
+    render();
+  } else {
+    alert("Пожалуйста, сначала введите данные в редактировании");
   }
-  render();
 };
 
 const updateValue = (event) => (valueInputTask = event.target.value);
@@ -64,8 +68,11 @@ const render = () => {
       editSum.type = "number";
       const editDate = document.createElement("input");
       editDate.type = "date";
+      editDate.className = "date";
       editDate.min = "2022-01-01";
       editDate.max = "2022-12-31";
+      const newDate = dateVal.slice(0, 10).split(".").reverse().join("-");
+      editDate.value = newDate;
       const imageDone = document.createElement("img");
       imageDone.src = "images/done.svg";
       imageDone.className = "doneSvg";
@@ -75,14 +82,15 @@ const render = () => {
       const containerForButton = document.createElement("div");
       containerForButton.className = "buttonTask";
       imageDone.onclick = () => saveTask(index, timeText, timeSum, timeDate);
-      editInput.className = "textTask";
+      editInput.className = "editTask";
       editInput.value = item.text;
-      editSum.className = "allSum";
+      editSum.className = "allSumEdit";
       editSum.value = item.sum;
-      editDate.className = "date";
-      editDate.value = item.date.slice(0, 10).split("-").reverse().join(".");
+      editDate.className = "dateEdit";
+      editDate.value = item.date.slice(0, 10).split(".").reverse().join("-");
       const imageClose = document.createElement("img");
       imageClose.src = "images/close.svg";
+      imageClose.className = "closeSvg";
       imageClose.onclick = () => closeTask(item, index);
       container.appendChild(editInput);
       container.appendChild(editDate);
@@ -153,7 +161,8 @@ const render = () => {
         sideInput.className = "date";
         sideInput.min = "2022-01-01";
         sideInput.max = "2022-12-31";
-        sideInput.value = dateVal;
+        const newDate = dateVal.slice(0, 10).split(".").reverse().join("-");
+        sideInput.value = newDate;
         containerForNumb.replaceChild(sideInput, date);
         sideInput.focus();
         sideInput.onblur = () => {
@@ -197,12 +206,13 @@ const editTask = (index) => {
 const sumFunc = () => allTasks.reduce((acc, task) => acc + task.sum, 0);
 
 const saveTask = async (index, timeText, timeSum, timeDate) => {
-  flagForEditing = -1;
   let { _id, text, sum, date } = allTasks[index];
   text = timeText ? timeText : text;
   sum = timeSum ? timeSum : sum;
   date = timeDate ? timeDate : date;
-  if (timeText.trim() || timeSum > 0 || timeDate) {
+  if (!timeText.trim() || timeSum < 1)
+    alert("Пожалуйста, введите корректные данные");
+  else {
     const resp = await fetch(`http://localhost:7070/updateTasks`, {
       method: "PATCH",
       headers: {
@@ -218,7 +228,8 @@ const saveTask = async (index, timeText, timeSum, timeDate) => {
     });
     const result = await resp.json();
     allTasks = result.data;
-  } else alert("Пожалуйста, введите корректные данные");
+    flagForEditing = -1;
+  }
   render();
 };
 
