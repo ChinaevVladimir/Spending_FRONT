@@ -49,11 +49,10 @@ const onClickButton = async () => {
 const updateValue = (event) => (valueInputTask = event.target.value);
 const updateValue2 = (event) => (valueInputSum = event.target.value);
 
-const allSum = document.createElement("p");
-
 const render = () => {
   const content = document.getElementById("contentPage");
   const contentSum = document.getElementById("inSum");
+  const allSum = document.getElementById("inSum");
   allSum.innerText = `Итого: ${sumFunc()} р.`;
   while (content.firstChild) content.removeChild(content.firstChild);
   allTasks.map((item, index) => {
@@ -175,7 +174,6 @@ const render = () => {
       sideContainer.appendChild(containerForNumb);
       sideContainer.appendChild(containerForButton);
       container.appendChild(sideContainer);
-      contentSum.appendChild(allSum);
       content.appendChild(container);
     }
   });
@@ -198,8 +196,7 @@ const editTask = (index) => {
   render();
 };
 
-const sumFunc = () => allTasks.reduce((acc, num) => acc + num.sum, 0);
-console.log(sumFunc(), "sumFunc");
+const sumFunc = () => allTasks.reduce((acc, task) => acc + task.sum, 0);
 
 const saveTask = async (index, timeText, timeSum, timeDate) => {
   flagForEditing = -1;
