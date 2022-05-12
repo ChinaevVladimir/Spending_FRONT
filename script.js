@@ -51,6 +51,8 @@ const updateValue2 = (event) => (valueInputSum = event.target.value);
 
 const render = () => {
   const content = document.getElementById("contentPage");
+  const allSum = document.getElementById("inSum");
+  allSum.innerText = `Итого: ${sumFunc()} р.`;
   while (content.firstChild) content.removeChild(content.firstChild);
   allTasks.map((item, index) => {
     const { text: textVal, sum: sumVal, date: dateVal } = item;
@@ -70,6 +72,8 @@ const render = () => {
       editInput.onchange = (e) => (timeText = e.target.value);
       editSum.onchange = (e) => (timeSum = e.target.value);
       editDate.onchange = (e) => (timeDate = e.target.value);
+      const containerForButton = document.createElement("div");
+      containerForButton.className = "buttonTask";
       imageDone.onclick = () => saveTask(index, timeText, timeSum, timeDate);
       editInput.className = "textTask";
       editInput.value = item.text;
@@ -83,8 +87,9 @@ const render = () => {
       container.appendChild(editInput);
       container.appendChild(editDate);
       container.appendChild(editSum);
-      container.appendChild(imageDone);
-      container.appendChild(imageClose);
+      containerForButton.appendChild(imageDone);
+      containerForButton.appendChild(imageClose);
+      container.appendChild(containerForButton);
       content.appendChild(container);
     } else {
       const container = document.createElement("div");
@@ -188,6 +193,8 @@ const editTask = (index) => {
   flagForEditing = index;
   render();
 };
+
+const sumFunc = () => allTasks.reduce((acc, task) => acc + task.sum, 0);
 
 const saveTask = async (index, timeText, timeSum, timeDate) => {
   flagForEditing = -1;
